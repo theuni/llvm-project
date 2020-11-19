@@ -1101,7 +1101,7 @@ void MemorySSAUpdater::removeMemoryAccess(MemoryAccess *MA) {
 }
 
 void MemorySSAUpdater::removeBlocks(
-    const SmallPtrSetImpl<BasicBlock *> &DeadBlocks) {
+    const SmallSetVector<BasicBlock *, 8> &DeadBlocks) {
   // First delete all uses of BB in MemoryPhis.
   for (BasicBlock *BB : DeadBlocks) {
     Instruction *TI = BB->getTerminator();

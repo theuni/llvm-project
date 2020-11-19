@@ -388,7 +388,7 @@ private:
   void deleteDeadLoopBlocks() {
     DomTreeUpdater DTU(DT, DomTreeUpdater::UpdateStrategy::Eager);
     if (MSSAU) {
-      SmallPtrSet<BasicBlock *, 8> DeadLoopBlocksSet(DeadLoopBlocks.begin(),
+      SmallSetVector<BasicBlock *, 8> DeadLoopBlocksSet(DeadLoopBlocks.begin(),
                                                      DeadLoopBlocks.end());
       MSSAU->removeBlocks(DeadLoopBlocksSet);
     }
