@@ -22,11 +22,17 @@ Example usage:
 `$ bin/clang++ -fsyntax-only -fplugin=lib/PropagateEarlyExit.so example.cc`
 
 ```
-example.cpp:19:6: warning: Function 'caller2' calls into a function that returns early_exit_t but does not itself return early_exit_t
+example.cc:30:6: warning: Function 'caller2' calls into a function that returns early_exit_t but does not itself return early_exit_t
 void caller2() // should warn for not returning early_exit_t.
      ^
-example.cpp:21:33: note: early_exit_t returned here
+./example.h:4:6: note: 'caller2' declared here
+void caller2();
+     ^
+example.cc:32:33: note: early_exit_t returned here
     auto foo = maybe_early_exit();
+                                ^
+example.cc:33:33: note: early_exit_t returned here
+    auto bar = maybe_early_exit();
                                 ^
 1 warning generated.
 ```
