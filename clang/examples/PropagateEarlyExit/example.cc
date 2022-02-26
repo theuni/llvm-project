@@ -21,11 +21,13 @@ early_exit_t<int> maybe_early_exit()
 early_exit_t<> caller()
 {
     auto foo = maybe_early_exit();
+    auto bar = maybe_early_exit();
     return foo;
 }
 
 void caller2() // should warn for not returning early_exit_t.
 {
     auto foo = maybe_early_exit();
+    auto bar = maybe_early_exit();
     return;
 }
