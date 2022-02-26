@@ -1,0 +1,6 @@
+#ifndef PROPAGATE_EARLY_EXIT_H
+#define PROPAGATE_EARLY_EXIT_H
+
+void caller2();
+
+#endif // PROPAGATE_EARLY_EXIT_H

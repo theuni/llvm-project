@@ -10,6 +10,8 @@
 // an early_exit_t. The intention is to force _any_ returned early_exit_t to
 // bubble all the way back up to main. Like manual exception catch/rethrowing.
 
+#include "example.h"
+
 template <typename T = int>
 struct early_exit_t{};
 
