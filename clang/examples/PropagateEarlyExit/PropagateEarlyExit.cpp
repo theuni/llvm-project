@@ -45,6 +45,8 @@ public:
         "does not itself return early_exit_t");
     NoteCallLocation = Diags.getCustomDiagID(
         DiagnosticsEngine::Note, "early_exit_t returned here");
+    NoteDeclarationLocation = Diags.getCustomDiagID(
+        DiagnosticsEngine::Note, "%q0 declared here");
   }
   bool VisitFunctionDecl(FunctionDecl *MethodDecl) {
     if (MethodDecl->isThisDeclarationADefinition() && MethodDecl->hasBody()) {
@@ -55,6 +57,10 @@ public:
         Visitor.TraverseDecl(MethodDecl);
         if (!Visitor.m_decls.empty()) {
             Diags.Report(MethodDecl->getLocation(), WarningUnpropagatedEarlyExit) << MethodDecl;
+            auto canon_decl = MethodDecl->getCanonicalDecl();
+            if (canon_decl != MethodDecl) {
+              Diags.Report(canon_decl->getLocation(), NoteDeclarationLocation) << canon_decl;
+            }
             for (const auto& decl : Visitor.m_decls) {
                 Diags.Report(decl->getRParenLoc(), NoteCallLocation);
             }
@@ -68,6 +74,7 @@ private:
   DiagnosticsEngine &Diags;
   unsigned WarningUnpropagatedEarlyExit;
   unsigned NoteCallLocation;
+  unsigned NoteDeclarationLocation;
 };
 
 class EarlyExitConsumer : public ASTConsumer {
