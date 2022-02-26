@@ -19,7 +19,7 @@ functionDecl(
 
 Example usage:
 
-`$ bin/clang++ -fsyntax-only -fplugin=lib/PropagateEarlyExit.so example.cpp`
+`$ bin/clang++ -fsyntax-only -fplugin=lib/PropagateEarlyExit.so example.cc`
 
 ```
 example.cpp:19:6: warning: Function 'caller2' calls into a function that returns early_exit_t but does not itself return early_exit_t
