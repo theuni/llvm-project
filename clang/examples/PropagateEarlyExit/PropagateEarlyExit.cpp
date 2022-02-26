@@ -22,16 +22,13 @@ static std::string g_match_type = "early_exit_t";
 
 class CallExprVisitor : public RecursiveASTVisitor<CallExprVisitor> {
 public:
-  bool m_found = false;
-  CallExpr* m_decl = nullptr;
+  llvm::SmallVector<const CallExpr*> m_decls;
   bool VisitCallExpr(CallExpr *CallExpr) {
     if (auto* CalleeDecl = CallExpr->getDirectCallee()) {
         QualType rettype = CalleeDecl->getReturnType();
         auto retstring = rettype.getAsString();
         if (retstring.find(g_match_type) == 0) {
-            m_found = true;
-            m_decl = CallExpr;
-            return false;
+            m_decls.push_back(CallExpr);
         }
     }
     return true;
@@ -56,9 +53,11 @@ public:
       if (retstring.find(g_match_type) != 0) {
         CallExprVisitor Visitor;
         Visitor.TraverseDecl(MethodDecl);
-        if (Visitor.m_found) {
+        if (!Visitor.m_decls.empty()) {
             Diags.Report(MethodDecl->getLocation(), WarningUnpropagatedEarlyExit) << MethodDecl;
-            Diags.Report(Visitor.m_decl->getRParenLoc(), NoteCallLocation);
+            for (const auto& decl : Visitor.m_decls) {
+                Diags.Report(decl->getRParenLoc(), NoteCallLocation);
+            }
         }
       }
     }
