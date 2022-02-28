@@ -48,10 +48,10 @@ void PropagateEarlyExit::check(const MatchFinder::MatchResult &Result) {
         return;
     }
 
-    //TODO: There's probably some real void type to check against rather than string matching
-    auto retstring = decl->getReturnType().getAsString();
-    if (retstring == "void") {
-        retstring = "";
+    auto rettype = decl->getReturnType();
+    std::string retstring;
+    if (!rettype->isVoidType()) {
+        retstring = rettype.getAsString();
     }
 
     auto loc = decl->getBeginLoc();
