@@ -30,6 +30,11 @@ extern volatile int AndroidModuleAnchorSource;
 static int LLVM_ATTRIBUTE_UNUSED AndroidModuleAnchorDestination =
     AndroidModuleAnchorSource;
 
+// This anchor is used to force the linker to link the BitcoinModule.
+extern volatile int BitcoinModuleAnchorSource;
+static int LLVM_ATTRIBUTE_UNUSED BitcoinModuleAnchorDestination =
+    BitcoinModuleAnchorSource;
+
 // This anchor is used to force the linker to link the BoostModule.
 extern volatile int BoostModuleAnchorSource;
 static int LLVM_ATTRIBUTE_UNUSED BoostModuleAnchorDestination =
