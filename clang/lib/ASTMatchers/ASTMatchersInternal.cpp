@@ -1028,6 +1028,7 @@ const internal::VariadicAllOfMatcher<NestedNameSpecifier> nestedNameSpecifier;
 const internal::VariadicAllOfMatcher<NestedNameSpecifierLoc>
     nestedNameSpecifierLoc;
 const internal::VariadicAllOfMatcher<Attr> attr;
+const internal::VariadicDynCastAllOfMatcher<Attr, PluginAttr> pluginAttr;
 const internal::VariadicDynCastAllOfMatcher<Stmt, CUDAKernelCallExpr>
     cudaKernelCallExpr;
 const AstTypeMatcher<BuiltinType> builtinType;

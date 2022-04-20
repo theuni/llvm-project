@@ -3914,3 +3914,10 @@ def Error : InheritableAttr {
   let Subjects = SubjectList<[Function], ErrorDiag>;
   let Documentation = [ErrorAttrDocs];
 }
+
+def Plugin : InheritableAttr {
+  let Spellings = [];
+  let Documentation = [Undocumented];
+  let Ignored = 1;
+  let Args = [StringArgument<"AttrTag">];
+}

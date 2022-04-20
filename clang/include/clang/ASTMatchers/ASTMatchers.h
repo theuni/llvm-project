@@ -7467,6 +7467,8 @@ AST_MATCHER_P(NestedNameSpecifier, specifiesNamespace,
 ///   matches "nodiscard", "nonnull", "noinline", and the whole "#pragma" line.
 extern const internal::VariadicAllOfMatcher<Attr> attr;
 
+
+extern const internal::VariadicDynCastAllOfMatcher<Attr, PluginAttr> pluginAttr;
 /// Overloads for the \c equalsNode matcher.
 /// FIXME: Implement for other node types.
 /// @{
@@ -7764,6 +7766,22 @@ AST_MATCHER_P(Decl, hasAttr, attr::Kind, AttrKind) {
   for (const auto *Attr : Node.attrs()) {
     if (Attr->getKind() == AttrKind)
       return true;
+  }
+  return false;
+}
+
+
+AST_MATCHER_P(PluginAttr, isPluginAttr, std::string, Value) {
+    return Node.getAttrTag() == Value;
+}
+
+AST_MATCHER_P(Decl, hasPluginAttr, std::string, AttrTag) {
+  for (const auto *Attr : Node.attrs()) {
+    if (const auto* pluginAttr = llvm::dyn_cast<PluginAttr>(Attr)) {
+      if (pluginAttr->getAttrTag() == AttrTag) {
+        return true;
+      }
+    }
   }
   return false;
 }
