@@ -422,6 +422,18 @@ DerivedArgList *Driver::TranslateInputArgs(const InputArgList &Args) const {
   const llvm::opt::OptTable &Opts = getOpts();
   DerivedArgList *DAL = new DerivedArgList(Args);
 
+  // Absorb options which disable include paths here in case the preprocessor
+  // is not run, for example when all inputs are objects.
+  Args.ClaimAllArgs(options::OPT_nobuiltininc);
+  Args.ClaimAllArgs(options::OPT_nostdinc);
+  Args.ClaimAllArgs(options::OPT_nostdlibinc);
+  Args.ClaimAllArgs(options::OPT_nostdincxx);
+  Args.ClaimAllArgs(options::OPT_nogpuinc);
+  Args.ClaimAllArgs(options::OPT_nohipwrapperinc);
+
+  // Also claim the override of -nobuiltininc here.
+  Args.ClaimAllArgs(options::OPT_ibuiltininc);
+
   bool HasNostdlib = Args.hasArg(options::OPT_nostdlib);
   bool HasNostdlibxx = Args.hasArg(options::OPT_nostdlibxx);
   bool HasNodefaultlib = Args.hasArg(options::OPT_nodefaultlibs);
